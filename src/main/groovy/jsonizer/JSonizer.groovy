@@ -15,18 +15,24 @@ class JSonizer {
     }
     
     Object.metaClass {
-      toJsonp = {
-        "{" +
-            delegate.
-            properties.
-            sort().
-            findAll { name, value -> name != "class" && value != null }.
-            collect { name, value -> "\"${name}\": ${value.toJsonp()}"   }.
-            join(", ") +
-         "}"
+      toJsonp = { formatter = "minified" ->
+        delegate."formatJson${formatter.capitalize()}"(
+          delegate.
+          properties.
+          sort().
+          findAll { name, value -> name != "class" && value != null }.
+          collect { name, value -> [ name ,  value.toJsonp(formatter)] }
+        )
       }
-      
-      toJson = { delegate.toJsonp() }
+      toJson = { 
+        formatter = "minified" -> delegate.toJsonp(formatter) 
+      }
+      formatJsonBeautified  = { attributes ->
+        "{\n" + attributes.collect { name, value -> "\"${name}\" : ${value}" }.join(",\n") + " }"
+      }
+      formatJsonMinified = { attributes ->
+        "{" + attributes.collect { name, value -> "\"${name}\":${value}" }.join(",") + "}"
+      }
       
     }
     

@@ -35,7 +35,7 @@ class JSonizerTest {
 
   @Test
   void "jsonp de un objeto es el jsonp de cada uno de sus atributos con una clave"()  {
-    assert new Dummy(y: [], x: 3).toJsonp() == '{"x": 3, "y": []}'
+    assert new Dummy(y: [], x: 3).toJsonp() == '{"x":3,"y":[]}'
   }
   
   @Test(expected = Exception)
